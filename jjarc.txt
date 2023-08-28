@@ -1,0 +1,9 @@
+v10.Q.changed:connect(function(p14)
+    if p14 and u3 == false and v3.Activate(l__BodyEffects__8) and (l__LocalPlayer__2.DataFolder.Information:FindFirstChild("JJARC") and l__BodyEffects__8.Mask.Value == "[Breathing Mask]" and l__Character__4:FindFirstChild("In-gameMask")) then
+        u3 = true;
+        l__MainEvent__11:FireServer("BreathingHAMON");
+        wait(2);
+        u3 = false;
+    end;
+end);
+{"Name":"Elias","Skin":"3","Shirt":"40","Hair":"4","Height":0.191631467609507527560808171074,"Life":-322,"HamonLevel":1609,"Pants":"46","Face":"17","HairColor":"Mulberry"}

@@ -1,0 +1,171 @@
+getgenv().Transform = "Transform!"
+getgenv().Titan = "Rage!"
+getgenv().DashLoad = "LOADDASH"
+getgenv().Stand = "/e stand"
+getgenv().DragonMode = "/e dragonmode"
+getgenv().HideMask = "/e hidemask"
+getgenv().SafeTp = "/safetp"
+getgenv().Revive = "/revive"
+
+
+--toggle
+local standmode = false
+local dragonmode = false
+local bulletdef = false
+local dashtoggle = false
+local isrevive = false
+local isstped = false
+
+--end
+
+
+local OriginalKeyUpValue = 0
+function StopAudio()
+	if game:GetService("Players").LocalPlayer.Character.LowerTorso:FindFirstChild("BOOMBOXSOUND") then
+		game:GetService("Players").LocalPlayer.Character.LowerTorso.BOOMBOXSOUND:Stop()
+	end
+end
+function stop(ID, Key)
+	local cor = coroutine.wrap(function()
+		wait(game:GetService("Players").LocalPlayer.Character.LowerTorso.BOOMBOXSOUND.TimeLength-0.1)
+		if game:GetService("Players").LocalPlayer.Character.LowerTorso.BOOMBOXSOUND.SoundId == "rbxassetid://"..ID and OriginalKeyUpValue == Key then
+			StopAudio()
+		end
+	end)
+	cor()
+end
+function play(ID, STOP, LMAO)
+	if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("[Boombox]") then
+		local Tool = nil
+		if game:GetService("Players").LocalPlayer.Character:FindFirstChildWhichIsA("Tool") and LMAO == true then
+			Tool = game:GetService("Players").LocalPlayer.Character:FindFirstChildWhichIsA("Tool")
+			game:GetService("Players").LocalPlayer.Character:FindFirstChildWhichIsA("Tool").Parent = game:GetService("Players").LocalPlayer.Backpack
+		end
+		game:GetService("Players").LocalPlayer.Backpack["[Boombox]"].Parent =
+			game:GetService("Players").LocalPlayer.Character
+		game.ReplicatedStorage.MainEvent:FireServer("Boombox", ID)
+		game:GetService("Players").LocalPlayer.Character["[Boombox]"].RequiresHandle = false
+		if game:GetService("Players").LocalPlayer.Character["[Boombox]"]:FindFirstChild("Handle") then
+			game:GetService("Players").LocalPlayer.Character["[Boombox]"].Handle:Destroy()
+		end
+		game:GetService("Players").LocalPlayer.Character["[Boombox]"].Parent =
+			game:GetService("Players").LocalPlayer.Backpack
+		game:GetService("Players").LocalPlayer.PlayerGui.MainScreenGui.BoomboxFrame.Visible = false
+		if Tool ~= true then
+			if Tool then
+				Tool.Parent = game:GetService("Players").LocalPlayer.Character
+			end
+		end
+		if STOP == true then
+			game:GetService("Players").LocalPlayer.Character.LowerTorso:WaitForChild("BOOMBOXSOUND")
+			local cor = coroutine.wrap(function()
+				repeat wait() until game:GetService("Players").LocalPlayer.Character.LowerTorso.BOOMBOXSOUND.SoundId == "rbxassetid://"..ID and game:GetService("Players").LocalPlayer.Character.LowerTorso.BOOMBOXSOUND.TimeLength > 0.01
+				OriginalKeyUpValue = OriginalKeyUpValue+1
+				stop(ID, OriginalKeyUpValue)
+			end)
+			cor()
+		end
+	end
+end
+
+local oldc = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+game:GetService('Players').LocalPlayer.Chatted:Connect(function(msg)
+	if msg == getgenv().Stand then
+		standmode = true
+		if standmode then
+			local Animate = game.Players.LocalPlayer.Character.Animate
+			Animate.idle.Animation1.AnimationId = "rbxassetid://7318630720"
+			Animate.idle.Animation2.AnimationId = "rbxassetid://7318630720"
+			Animate.run.RunAnim.AnimationId = "rbxassetid://657564596"
+			Animate.walk.WalkAnim.AnimationId = "rbxassetid://657552124"
+			Animate.climb.ClimbAnim.AnimationId = "rbxassetid://658360781"
+			Animate.fall.FallAnim.AnimationId = "rbxassetid://657600338"
+			Animate.swim.Swim.AnimationId = "rbxassetid://657560551"
+			Animate.swimidle.SwimIdle.AnimationId = "rbxassetid://657557095"
+			game.Players.LocalPlayer.Character.Humanoid.Jump = true
+		else 
+			standmode = false
+		end
+	elseif msg == getgenv().DragonMode then
+		if dragonmode then
+			dragonmode = false
+		end
+		dragonmode = true
+	elseif msg == getgenv().Transform then   
+		if bulletdef == false then
+			bulletdef = true
+			local bulletids = {
+				"5185157119";
+				"5185157257";
+			}
+			local Humanoid = game.Players.LocalPlayer.Character.Humanoid
+			local OldHealth = Humanoid.Health
+			Humanoid:GetPropertyChangedSignal("Health"):Connect(function()
+				if bulletdef == true then
+					if Humanoid.Health < OldHealth then
+						play(bulletids[math.random(1,#bulletids)], true, true)
+					end
+					OldHealth = Humanoid.Health
+				end
+			end)
+		elseif bulletdef == true then
+			bulletdef = false
+		end
+	elseif msg == getgenv().DashLoad then
+		if dashtoggle == false then
+			dashtoggle = true
+			local Char = game.Players.LocalPlayer.Character local Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
+			while dashtoggle do wait()
+				for i,v in next, Hum:GetPlayingAnimationTracks() do
+					if v.Animation.AnimationId == "rbxassetid://2788289281" then
+						v:Stop()
+						for i,v in next, Hum:GetPlayingAnimationTracks() do
+							if v.Animation.AnimationId == "rbxassetid://2788292075" then
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -30)
+								wait(0.1)
+								game:GetService('Players').LocalPlayer.Character:FindFirstChild('HumanoidRootPart').Anchored = true;
+								wait(1.5)
+								game:GetService('Players').LocalPlayer.Character:FindFirstChild('HumanoidRootPart').Anchored = false
+							end
+						end
+					end
+				end
+			end
+		else
+			dashtoggle = false
+		end
+	elseif msg == getgenv().HideMask then  
+		if game.Players.LocalPlayer.Character:FindFirstChild('In-gameMask'):FindFirstChild('Handle') then
+			game.Players.LocalPlayer.Character:FindFirstChild('In-gameMask'):FindFirstChild('Handle'):Destroy()
+		end
+	elseif msg == getgenv().SafeTp then
+		if isstped == false then
+			isstped = true
+			oldc = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+			wait(0.75)
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(207, 38, 200016)
+		elseif isstped then
+			isstped = false
+			wait(0.75)
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = oldc
+		end
+	elseif msg == getgenv().Revive then
+		if isrevive == false then
+			isrevive = true
+			game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("I'm back!", "All")
+			while isrevive do
+				wait()
+				for i,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+					if v.Name == "GRABBING_CONSTRAINT" then
+						v:Destroy()
+						game.Players.LocalPlayer.Character.Humanoid.Sit = true
+						wait(0.2)
+						game.Players.LocalPlayer.Character.Humanoid.Jump = true
+					end
+				end
+			end
+		else 
+			isrevive = false
+		end
+	end
+end)

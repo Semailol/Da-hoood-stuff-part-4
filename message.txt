@@ -1,0 +1,947 @@
+--// Linux's Stand Template \\--
+getgenv().deleteface = true
+getgenv().automask = true
+getgenv().MainTheme = 292481006
+getgenv().MessageOnSummon = false
+getgenv().MessageOnVanish = false
+getgenv().Message1 = "Fear me!"
+getgenv().Message2 = "Good Bye, Master!"
+
+local MainTable = {
+    StandUser = "dtblinux",
+    MainStand = "IlIlIIIlllIIlIllllII"
+}
+
+local StandUser = game.Players:FindFirstChild(MainTable.StandUser)
+local MainStand = game.Players:FindFirstChild(MainTable.MainStand)
+
+--// On Script Execution \\--
+
+--// Anti Cheat Bypass \\--
+assert(getrawmetatable)
+grm = getrawmetatable(game)
+setreadonly(grm, false)
+old = grm.__namecall
+grm.__namecall = newcclosure(function(self, ...)
+    local args = {...}
+    if tostring(args[1]) == "TeleportDetect" then
+        return
+    elseif tostring(args[1]) == "CHECKER_1" then
+        return
+    elseif tostring(args[1]) == "CHECKER" then
+        return
+    elseif tostring(args[1]) == "GUI_CHECK" then
+        return
+    elseif tostring(args[1]) == "OneMoreTime" then
+        return
+    elseif tostring(args[1]) == "checkingSPEED" then
+        return
+    elseif tostring(args[1]) == "BANREMOTE" then
+        return
+    elseif tostring(args[1]) == "PERMAIDBAN" then
+        return
+    elseif tostring(args[1]) == "KICKREMOTE" then
+        return
+    elseif tostring(args[1]) == "BR_KICKPC" then
+        return
+    elseif tostring(args[1]) == "BR_KICKMOBILE" then
+        return
+    elseif tostring(args[1]) == "BreathingHAMON" then
+        return
+    elseif tostring(args[1]) == "VirusCough" then
+        return
+    end
+    return old(self, ...)
+end)
+
+--// Anti AFK \\--
+local VirtualUser = game:GetService("VirtualUser")
+game:GetService("Players").LocalPlayer.Idled:connect(function()
+    VirtualUser:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    wait(1)
+    VirtualUser:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+end)
+
+--// God Mode \\--
+lp = game:GetService("Players").LocalPlayer
+game:GetService("StarterPlayer").StarterCharacterScripts["CheckingKOED                                                                   ."]:Destroy()
+for i,v in pairs(lp.Character:GetChildren()) do
+    if v.ClassName == 'Script' then
+        v:Destroy()
+    end
+    local newCharacter =  game.Workspace:WaitForChild(lp.Name)
+    local spoofFolder = Instance.new('Folder');
+    spoofFolder.Name = 'FULLY_LOADED_CHAR';
+    spoofFolder.Parent = newCharacter;
+    newCharacter:WaitForChild('RagdollConstraints'):Destroy();
+    local spoofValue = Instance.new('BoolValue', newCharacter);
+    spoofValue.Name = 'RagdollConstraints';         
+    lp.Character.BodyEffects.Defense:Destroy()
+    Defense = Instance.new("IntValue", lp.Character.BodyEffects)
+    Defense.Name = "Defense"
+    Defense.Value = 101
+    lp.Character:WaitForChild('BodyEffects').Armor:Destroy()
+    local Clone1 = Instance.new("IntValue")
+    local Clone2 = Instance.new("Folder")
+    Clone1.Name = "Armor"
+    Clone1.Value = 101
+    Clone1.Parent = lp.Character.BodyEffects
+end
+
+--// Volume Control & Fps Stuff \\--
+UserSettings().GameSettings.MasterVolume = 0
+setfpscap(60)
+--game.RunService:Set3dRenderingEnabled(false)
+
+--// Delete Chairs \\--
+for i,v in pairs(game.Workspace:GetDescendants()) do
+    if v:IsA('Seat') then
+        v:Destroy()
+    end
+end
+
+--// Status Table \\--
+local MainStatus = {
+    UserStatus = {
+        InGame = false,
+        CurrentUser = StandUser,
+        StudLimit = 75
+    },
+    StandStatus = {
+        InGame = false,
+        IsSummoned = false,
+        CurrentAction = 'Idle',
+        AttackMode = 'Heavy',
+        Weapon = 'Combat',
+        StandPos = CFrame.new(1, 2, 3),
+        CurrentTarget = nil,
+        StudLimit = 75
+    }
+}
+
+--// Auto Masking \\--
+function mask()
+    local OldPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+    local Mask = game:GetService("Workspace").Ignored.Shop["[Surgeon Mask] - $25"]
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Mask.Head.CFrame
+    wait(0.25)
+    fireclickdetector(Mask.ClickDetector)
+    game.Players.LocalPlayer.Backpack:WaitForChild("Mask")
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = OldPosition
+    game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack.Mask)
+    game.Players.LocalPlayer.Character:FindFirstChild('Mask'):Activate()
+    wait(1)
+    game.Players.LocalPlayer.Character:FindFirstChild("In-gameMask"):FindFirstChildWhichIsA("Model"):Destroy()
+    game.Players.LocalPlayer.Character:FindFirstChild("In-gameMask"):FindFirstChild('Handle'):Destroy()
+    game.Players.LocalPlayer.Character.Humanoid:UnequipTools()
+end
+
+if getgenv().deleteface then
+    wait(10)
+    game.Players.LocalPlayer.Character.Head.face:Destroy()
+end
+
+if getgenv().automask then
+    wait(2)
+    mask()
+end
+
+--// Locals \\--
+local Players = game:GetService('Players')
+local Player = Players.LocalPlayer
+local RS = game:GetService('RunService')
+local UIS = game:GetService('UserInputService')
+local MainEvent = game:GetService("ReplicatedStorage").MainEvent
+local mouse = Player:GetMouse()
+local Character = Player.Character
+local Humanoid = Character.Humanoid
+local StandUsa = StandUser.Character.Humanoid 
+local OriginalKeyUpValue = 0;
+
+--// Animations \\--
+
+local Float = Instance.new('Animation', game:GetService("ReplicatedStorage"):WaitForChild('ClientAnimations'))
+Float.AnimationId = 'rbxassetid://3541114300'
+Float.Name = 'Hovering'
+local Fly = Instance.new('Animation', game:GetService("ReplicatedStorage"):WaitForChild('ClientAnimations'))
+Fly.AnimationId = 'rbxassetid://3541044388'
+Fly.Name = 'Flying'
+local FlyAnim = Character:FindFirstChildWhichIsA('Humanoid'):LoadAnimation(Fly)
+
+--// Main Functions \\--
+
+function chat(msg)
+    game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(msg, "All")
+end
+
+function sendNotification(title,text)
+    game.StarterGui:SetCore("SendNotification",  {
+        Title = title;
+        Text = text;
+        Duration = 1;
+        Button1 = "Okay!";
+        Callback = NotificationBindable;
+    })
+end
+
+function GetNearest()
+    local ClosestPlayer
+    local ClosestDistance = math.huge
+    for _,v in pairs(Players:GetPlayers()) do
+        if v.Character and StandUser.Character then
+            if v ~= StandUser and v:FindFirstChild('DataFolder') and v:FindFirstChild('DataFolder'):FindFirstChild('Information') then
+                if v.Character:WaitForChild('BodyEffects')['K.O'].Value == false then
+                    if v:FindFirstChild('DataFolder'):FindFirstChild('Information'):FindFirstChild('Crew') then
+                        if v.Character:FindFirstChild('HumanoidRootPart') then
+                            if v.DataFolder.Information.Crew.Value ~= StandUser.DataFolder.Information.Crew.Value or not v.DataFolder.Information:FindFirstChild('Crew') then
+                                local Distance = (v.Character.HumanoidRootPart.Position - StandUser.Character.HumanoidRootPart.Position).Magnitude
+                                if Distance < ClosestDistance then
+                                    if Distance <= MainStatus.UserStatus.StudLimit then
+                                        ClosestDistance = Distance
+                                        ClosestPlayer = v
+                                    end
+                                end
+                            end
+                        end
+                    else
+                        if v.Character:FindFirstChild('HumanoidRootPart') then
+                            local Distance = (v.Character.HumanoidRootPart.Position - StandUser.Character.HumanoidRootPart.Position).Magnitude
+                            if Distance < ClosestDistance then
+                                if Distance <= MainStatus.UserStatus.StudLimit then
+                                    ClosestDistance = Distance
+                                    ClosestPlayer = v
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return ClosestPlayer
+end
+
+function findPlayer(name)
+    for _, player in ipairs(Players:GetPlayers()) do
+        if (string.lower(name) == string.sub(string.lower(player.Name), 1, #name)) then
+            return player;
+        end
+    end
+end
+
+function DeleteChar()
+    for i,v in pairs(Player.Character:GetChildren()) do
+        if v:IsA('MeshPart') or v:IsA('Part') or v:IsA('Accessory') then
+            v:Destroy()
+        end
+    end
+end
+
+function BreakVelocity()
+    local BeenASecond, V3 = false, Vector3.new(0, 0, 0)
+    delay(1, function()
+        BeenASecond = true
+    end)
+    while not BeenASecond do
+        for _, v in ipairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+            if v.IsA(v, "BasePart") then
+                v.Velocity, v.RotVelocity = V3, V3
+            end
+        end
+        wait()
+    end
+end
+
+function NormalAttack()
+    if Player.Character:FindFirstChild('Combat') then
+        Player.Character:FindFirstChild('Combat'):Activate()
+        Player.Character:FindFirstChild('Combat'):Deactivate()
+    else
+        Player.Backpack:FindFirstChild('Combat').Parent = Player.Character
+    end  
+end
+
+function HeavyAttack()
+    if Player.Character:FindFirstChild('Combat') then
+        Player.Character:FindFirstChild('Combat'):Activate()
+    else
+        Player.Backpack:FindFirstChild('Combat').Parent = Player.Character
+    end  
+end
+
+local function Moved()
+    if StandUsa.MoveDirection.magnitude > 0 then
+        if FlyAnim.IsPlaying == true then
+            return
+       end
+       FlyAnim:Play()
+    else
+        FlyAnim:Stop()
+    end	
+end
+
+function StopAudio()
+    game:GetService('Players').LocalPlayer.Character:FindFirstChild('LowerTorso'):FindFirstChild('BOOMBOXSOUND'):Stop();
+end;
+
+function Stop(i, v)
+    local w = coroutine.wrap(function()
+        wait(game:GetService('Players').LocalPlayer.Character:FindFirstChild('LowerTorso'):FindFirstChild('BOOMBOXSOUND').TimeLength-0.1)
+        if game:GetService('Players').LocalPlayer.Character:FindFirstChild('LowerTorso'):FindFirstChild('BOOMBOXSOUND').SoundId == 'rbxassetid://'..i and OriginalKeyUpValue == v then
+            StopAudio();
+        end;
+    end);
+    w();
+end;
+
+function Play(i, v, w)
+    if game:GetService('Players').LocalPlayer:FindFirstChildOfClass('Backpack'):FindFirstChild('[Boombox]') then
+        local Tool = nil;
+        if game:GetService('Players').LocalPlayer.Character:FindFirstChildOfClass('Tool') and w == true then
+            Tool = game:GetService('Players').LocalPlayer.Character:FindFirstChildOfClass('Tool')
+            game:GetService('Players').LocalPlayer.Character:FindFirstChildOfClass('Tool').Parent = game:GetService('Players').LocalPlayer:FindFirstChildOfClass('Backpack');
+        end;
+        game:GetService('Players').LocalPlayer:FindFirstChildOfClass('Backpack'):FindFirstChild('[Boombox]').Parent = game:GetService('Players').LocalPlayer.Character;
+        game:GetService('ReplicatedStorage'):FindFirstChild('MainEvent'):FireServer('Boombox', i);
+        game:GetService('Players').LocalPlayer.Character:FindFirstChild('[Boombox]').RequiresHandle = false;
+        if game:GetService('Players').LocalPlayer.Character:FindFirstChild('[Boombox]'):FindFirstChild('Handle') then
+            game:GetService('Players').LocalPlayer.Character:FindFirstChild('[Boombox]'):FindFirstChild('Handle'):Destroy();
+        end
+        game:GetService('Players').LocalPlayer.Character:FindFirstChild('[Boombox]').Parent = game:GetService('Players').LocalPlayer:FindFirstChildOfClass('Backpack')
+        if game:GetService('Players').LocalPlayer:FindFirstChildOfClass('PlayerGui'):FindFirstChild('MainScreenGui'):FindFirstChild('BoomboxFrame') then
+            game:GetService('Players').LocalPlayer:FindFirstChildOfClass('PlayerGui'):FindFirstChild('MainScreenGui'):FindFirstChild('BoomboxFrame').Visible = false;
+        end;
+        if Tool ~= true then
+            if Tool then
+                Tool.Parent = game:GetService('Players').LocalPlayer.Character
+            end;
+        end;
+        if v == true then
+            game:GetService('Players').LocalPlayer.Character:FindFirstChild('LowerTorso'):WaitForChild('BOOMBOXSOUND');
+            local x = coroutine.wrap(function()
+                repeat wait() until game:GetService('Players').LocalPlayer.Character:FindFirstChild('LowerTorso'):FindFirstChild('BOOMBOXSOUND').SoundId == 'rbxassetid://'..i and game:GetService('Players').LocalPlayer.Character:FindFirstChild('LowerTorso'):FindFirstChild('BOOMBOXSOUND').TimeLength > 0.01
+                OriginalKeyUpValue = OriginalKeyUpValue + 1;
+                Stop(i, OriginalKeyUpValue);
+            end);
+            x();
+        end;
+    end;
+end;
+
+function Play2(v)
+    Play(v, true, true);
+end;
+
+repeat wait(0.5) until StandUser
+sendNotification("Linux's Stand Script", "Main User InGame")
+MainStatus.UserStatus.InGame = true
+
+--// Command Handler \\--
+local commands = {}
+local prefix = "/"
+
+commands.e = function(arguments)
+    local CMD = arguments[1]
+    if CMD == 'leave' then
+        game:Shutdown()
+    end
+    if CMD == 'rejoin' then
+        game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId, game.JobId, Players.LocalPlayer)
+    end
+    if CMD == 'limit' then
+        if tonumber(arguments[2]) then
+            MainStatus.UserStatus.StudLimit = tonumber(arguments[2])
+        end
+    end
+    if CMD == 'reset' then
+        DeleteChar()
+    end
+    if CMD == 'fling' then
+        if arguments[2] then
+            local TARGET = findPlayer(tostring(arguments[2]))
+            if TARGET then
+                MainStatus.StandStatus.CurrentAction = 'Flinging'
+                MainStatus.StandStatus.IsSummoned = false
+                MainStatus.StandStatus.CurrentTarget = TARGET
+            end
+        end
+    end
+    if CMD == 'setuser' then
+        if arguments[2] then
+            local TARGET = findPlayer(tostring(arguments[2]))
+            if TARGET then
+                MainStatus.UserStatus.CurrentUser = TARGET
+            end
+        end
+    end
+    if CMD == 'attack' then
+        if arguments[2] then
+            local TARGET = findPlayer(tostring(arguments[2]))
+            if TARGET then
+                MainStatus.StandStatus.CurrentAction = 'Killing'
+                MainStatus.StandStatus.IsSummoned = false
+                MainStatus.StandStatus.CurrentTarget = TARGET
+            end
+        end
+    end
+    if CMD == 'light' then
+        MainStatus.StandStatus.AttackMode = 'Light'
+    end
+    if CMD == 'heavy' then
+        MainStatus.StandStatus.AttackMode = 'Heavy'
+    end
+    if CMD == 'bring' then
+        if arguments[2] then
+            local Targetting = findPlayer(tostring(arguments[2]))
+            if Targetting then
+                MainStatus.StandStatus.IsSummoned = false
+                repeat wait()
+                    if Targetting.Character:FindFirstChild("BodyEffects"):FindFirstChild("K.O").Value == false then
+                        if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Combat") then 
+                            game:GetService("Players").LocalPlayer.Character.Humanoid:EquipTool(game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Combat")) 
+                        end
+                    end
+                    game:GetService("Players").LocalPlayer.Character:FindFirstChild("Combat"):Activate()
+                    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = Targetting.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 2)
+                    game:GetService("RunService").Heartbeat:Wait()
+                until Targetting.Character:FindFirstChild("BodyEffects"):FindFirstChild("K.O").Value == true
+                repeat wait()
+                    if not Targetting.Character:FindFirstChild("GRABBING_CONSTRAINT") then
+                        game:GetService("ReplicatedStorage").MainEvent:FireServer("Grabbing", false)  
+                    end
+                    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Targetting.Character.UpperTorso.Position + Vector3.new(0, 3, 0))
+                    wait(.2)
+                until Targetting.Character:FindFirstChild("GRABBING_CONSTRAINT") or Targetting.Character:FindFirstChild("BodyEffects"):FindFirstChild("K.O").Value == false
+                wait()
+                MainStatus.StandStatus.IsSummoned = true
+                repeat wait() until Targetting.Character.BodyEffects:FindFirstChild("K.O").Value == false and not Targetting.Character:FindFirstChild("GRABBING_CONSTRAINT") or Targetting.Character.Parent == nil
+            end
+        end
+    end 
+end
+
+
+    sendNotification("Linux's Stand Script", "Stand InGame")
+    MainStatus.StandStatus.InGame = true
+    StandUser.Chatted:Connect(function(message,recipient)
+        if message == "/e left" then
+            MainStatus.StandStatus.StandPos = CFrame.new(2, 2, 3)
+            BreakVelocity()
+        elseif message == "/e right" then
+            SMainStatus.StandStatus.StandPos = CFrame.new(-2, 2, 3)
+            BreakVelocity()  
+        elseif message == "/e middle" then
+            MainStatus.StandStatus.StandPos = CFrame.new(0, 2, 3)
+            BreakVelocity()  
+        elseif message == "stand!summon" and MainStatus.StandStatus.IsSummoned == false then
+            MainStatus.StandStatus.IsSummoned = true
+            MainStatus.StandStatus.AttackMode = 'Heavy'
+            MainStatus.StandStatus.CurrentAction = 'Idle'
+            MainStatus.StandStatus.CurrentTarget = nil
+            Play(getgenv().MainTheme, false, true)
+            if getgenv().MessageOnSummon then
+                chat(getgenv().Message1)
+            end
+            BreakVelocity()
+        elseif message == 'stand!vanish' and MainStatus.StandStatus.IsSummoned then
+            if getgenv().MessageOnVanish then
+                chat(getgenv().Message2)
+                wait(0.90)
+            end
+            MainStatus.StandStatus.IsSummoned = false
+            MainStatus.StandStatus.CurrentAction = 'Vanish'
+            MainStatus.StandStatus.CurrentTarget = nil
+            BreakVelocity()
+        elseif message == 'stand!lightbarrage' and MainStatus.StandStatus.IsSummoned then
+            MainStatus.StandStatus.IsSummoned = false
+            MainStatus.StandStatus.AttackMode = 'Light'
+            MainStatus.StandStatus.CurrentAction = 'Barrage2'
+            MainStatus.StandStatus.CurrentTarget = nil
+            BreakVelocity()
+        elseif message == 'stand!barragefinisher' and MainStatus.StandStatus.IsSummoned then
+            MainStatus.StandStatus.CurrentAction = 'BarrageFinisher'
+            MainStatus.StandStatus.CurrentTarget = nil
+            wait(1)
+            MainStatus.StandStatus.IsSummoned = false
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -25)
+            wait(0.35)
+            MainStatus.StandStatus.CurrentAction = "Idle"
+            MainStatus.StandStatus.IsSummoned = true
+            BreakVelocity()
+        elseif message == 'stand!aura' then
+            MainStatus.StandStatus.IsSummoned = false
+            MainStatus.StandStatus.CurrentAction = 'Aura'
+            MainStatus.StandStatus.CurrentTarget = nil
+            BreakVelocity()
+        elseif message == 'stand!mimic' then
+            MainStatus.StandStatus.IsSummoned = false
+            MainStatus.StandStatus.CurrentAction = 'Mimic'
+            MainStatus.StandStatus.CurrentTarget = nil
+            BreakVelocity()
+        elseif message == 'stand!barrage' then
+            MainStatus.StandStatus.IsSummoned = false
+            MainStatus.StandStatus.CurrentAction = 'Barrage'
+            MainStatus.StandStatus.CurrentTarget = nil
+            BreakVelocity()
+        elseif message == 'Heavy Barrage!' then
+            MainStatus.StandStatus.IsSummoned = false
+            MainStatus.StandStatus.CurrentAction = 'Pierce'
+            MainStatus.StandStatus.CurrentTarget = nil
+            BreakVelocity()
+        elseif message == 'Fling!' then
+            MainStatus.StandStatus.IsSummoned = false
+            MainStatus.StandStatus.CurrentAction = 'Banish'
+            MainStatus.StandStatus.CurrentTarget = nil
+            BreakVelocity()
+        elseif message == 'STAR FINGER!' and MainStatus.StandStatus.IsSummoned then
+            MainStatus.StandStatus.CurrentAction = 'OraFinisher'
+            MainStatus.StandStatus.CurrentTarget = nil
+            Play2(8153738235)
+            wait(1)
+            MainStatus.StandStatus.IsSummoned = false
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -25)
+            wait(0.35)
+            MainStatus.StandStatus.CurrentAction = "Idle"
+            MainStatus.StandStatus.IsSummoned = true
+            BreakVelocity()
+        elseif message == 'Awaken.' and MainStatus.StandStatus.IsSummoned then
+            Play2(4526638837)
+            say("Good grief, you've ticked me off.")
+            BreakVelocity()   
+        end
+        message = string.lower(message)
+        local splitString = message:split(" ")
+        local slashCommand = splitString[1] 
+        local cmd = slashCommand:split(prefix)	
+        local cmdName = cmd[2]	
+        if commands[cmdName] then
+            local arguments = {} 
+            for i = 2, #splitString, 1 do
+                table.insert(arguments,splitString[i])			
+            end
+            commands[cmdName](arguments)
+        end
+    end)
+
+    --// Main NoClip & Loops \\--
+
+    lp = game:GetService("Players").LocalPlayer
+    rs = game:GetService("RunService")
+    
+    local PhysicsService = game:GetService("PhysicsService")
+    local Workspace = game:GetService("Workspace")
+    
+    local function doMath(index)
+        return -(2^(index-1))
+    end
+    local function FindCollisionGroup(CollisionGroup)
+        for i,v in pairs(gethiddenproperty(Workspace, "CollisionGroups"):split("\\")) do
+            local split = v:split("^")
+            if split[1] == CollisionGroup then
+                return v
+            end
+        end
+        return false
+    end
+    local function EditCollisionGroup(Name,arg1,arg2,arg3)
+        local str = ""
+        local args = {arg1,arg2,arg3}
+        for i,v in pairs(gethiddenproperty(Workspace, "CollisionGroups"):split("\\")) do
+            local split = v:split("^")
+            if split[1] == Name  then
+                for i,v in pairs(args) do
+                    if not v then
+                        args[i] = split[i]
+                    end
+                end
+                str = str..string.format("%s%s^%s^%s",((i == 1 and "" ) or "\\") ,args[1], args[2], args[3])
+            else	
+                str = str..string.format("%s%s^%s^%s",((i == 1 and "" ) or "\\") ,split[1], split[2], split[3])
+            end
+        end
+        sethiddenproperty(Workspace, "CollisionGroups", str)
+    end
+    local function CreateCollisionGroup(Name)
+        assert(FindCollisionGroup(Name) == false, "Could not create collision group, one with that name already exists.")
+        sethiddenproperty(Workspace, "CollisionGroups", string.format("%s\\%s^%s^%s", gethiddenproperty(Workspace, "CollisionGroups"),Name,tonumber(#PhysicsService:GetCollisionGroups()), "-1" ))
+        return true	
+    end
+    local function CollisionGroupSetCollidable(Name1,Name2,Boolean)
+        assert(typeof(Name1) == "string", string.format("Bad argument #1 to '?' (string expected, got %s)", typeof(Name1)))
+        assert(typeof(Name2) == "string", string.format("Bad argument #2 to '?' (string expected, got %s)", typeof(Name1)))
+        assert(typeof(Boolean) == "boolean", string.format("Bad argument #3 to '?' (boolean expected, got %s)", typeof(Name1)))
+        assert(FindCollisionGroup(Name1) ~= false, "Both collision groups must be valid.")
+        assert(FindCollisionGroup(Name2) ~= false, "Both collision groups must be valid.")
+        local CollisionGroup1 = FindCollisionGroup(Name1)
+        local CollisionGroup2 = FindCollisionGroup(Name2)
+        local split1 = CollisionGroup1:split("^")
+        local split2 = CollisionGroup2:split("^")
+        if Boolean == false then
+            if PhysicsService:CollisionGroupsAreCollidable(Name1, Name2) == true then
+                if Name1 == Name2 then
+                    EditCollisionGroup(split1[1], false, false , (tonumber(split1[3])) + doMath(tonumber(split1[2]+1)))
+                elseif Name1 ~= Name2 then
+                    EditCollisionGroup(split1[1], false, false , (tonumber(split1[3])) + doMath(tonumber(split2[2]+1)))
+                    EditCollisionGroup(split2[1], false, false , (tonumber(split2[3])) + doMath(tonumber(split1[2]+1)))
+                end
+            end
+        elseif Boolean == true then
+            if PhysicsService:CollisionGroupsAreCollidable(Name1, Name2) == false then
+                if Name1 == Name2 then
+                    EditCollisionGroup(split1[1], false, false , (tonumber(split1[3])) - doMath(tonumber(split1[2]+1)))
+                elseif Name1 ~= Name2 then
+                    EditCollisionGroup(split1[1], false, false , (tonumber(split1[3])) - doMath(tonumber(split2[2]+1)))
+                    EditCollisionGroup(split2[1], false, false , (tonumber(split2[3])) - doMath(tonumber(split1[2]+1)))
+                end
+            end
+        end
+    end
+    local function RemoveCollisionGroup(CollisionGroup)
+        string.gsub(gethiddenproperty(Workspace, "CollisionGroups"),"([%w%p]*)("..CollisionGroup.."%^%d+%^%-%d+)([%w%p]*)",function(arg1,arg2,arg3)
+            local new = ""
+            for index, value in pairs(string.split(arg3,"\\")) do
+                new = new.."\\"..string.gsub(value,"(%w+%^)(%d+)(%^%-%d+)",function(arg1,arg2,arg3)  return arg1..math.floor(tonumber(arg2)-1)..arg3 end)
+    
+            end
+            if new:sub(1,1) == "\\" then  new = new:sub(2,new:len()) end
+            local toReturn = arg1..new
+            if toReturn:sub(toReturn:len(),toReturn:len()) == "\\" then toReturn = toReturn:sub(1,toReturn:len()-1) end
+            sethiddenproperty(Workspace, "CollisionGroups", toReturn)
+        end)
+    end
+    local function RenameCollisionGroup(CollisionGroup,newName)
+        assert(typeof(CollisionGroup) == "string", string.format("Bad argument #1 to '?' (string expected, got %s)", typeof(CollisionGroup)))
+        assert(typeof(newName) == "string", string.format("Bad argument #1 to '?' (string expected, got %s)", typeof(newName)))
+        assert(FindCollisionGroup(CollisionGroup) ~= false, "Cannot find the collision group")
+        assert(FindCollisionGroup(newName) == false, "This collision group already exists!")
+        string.gsub(gethiddenproperty(Workspace, "CollisionGroups"),"([%w%p]*)("..CollisionGroup.."%^%d+%^%-%d+)([%w%p]*)",function(arg1,arg2,arg3)
+            local split = FindCollisionGroup(CollisionGroup):split("^")
+            local str = newName.."^"..split[2].."^"..split[3]
+            sethiddenproperty(Workspace, "CollisionGroups", arg1..str..arg3)
+        end)
+    end
+    xpcall(function()
+        local old
+        old = hookmetamethod(game, "__namecall" ,newcclosure(function(self,...)
+            if not checkcaller() then return old(self,...) end
+            local args = {...}
+            if self == PhysicsService then
+                if getnamecallmethod() == "RenameCollisionGroup" then
+                    return	RenameCollisionGroup(args[1],args[2])
+                elseif getnamecallmethod() == "RemoveCollisionGroup"  then
+                    return	RemoveCollisionGroup(args[1])
+                elseif getnamecallmethod() == "CreateCollisionGroup" then
+                    return	CreateCollisionGroup(args[1])
+                elseif getnamecallmethod() == "CollisionGroupSetCollidable" then
+                    return CollisionGroupSetCollidable(args[1],args[2],args[3])
+                end
+            end 
+    
+            return old(self,...)
+        end))
+    end, function()
+        local mt = getrawmetatable(game)
+        local old = mt.__namecall
+        setreadonly(mt,false)
+        mt.__namecall = newcclosure(function(self, ...)
+            if not checkcaller() then return old(self,...) end
+            local args = {...}
+            if self == PhysicsService then
+                if getnamecallmethod() == "RenameCollisionGroup" then
+                    return	RenameCollisionGroup(args[1],args[2])
+                elseif getnamecallmethod() == "RemoveCollisionGroup"  then
+                    return	RemoveCollisionGroup(args[1])
+                elseif getnamecallmethod() == "CreateCollisionGroup" then
+                    return	CreateCollisionGroup(args[1])
+                elseif getnamecallmethod() == "CollisionGroupSetCollidable" then
+                    return CollisionGroupSetCollidable(args[1],args[2],args[3])
+                end
+            end 
+            return old(self,...)
+        end)
+        setreadonly(mt,true)
+    end)
+    setfflag("HumanoidParallelRemoveNoPhysics", "False")
+    setfflag("HumanoidParallelRemoveNoPhysicsNoSimulate2", "False")
+    rs:BindToRenderStep("w", Enum.RenderPriority.Camera.Value, function()
+        wait()
+        for i,v in ipairs(lp.Character:GetDescendants()) do
+            lp.Character:WaitForChild("Humanoid"):ChangeState(11)
+        end
+    end)
+
+    game:GetService("RunService").RenderStepped:Connect(function()
+        if MainStatus.StandStatus.CurrentAction == "BarrageFinisher" then
+            HeavyAttack()
+        end
+    end)
+    
+    function Start()
+        RS.Heartbeat:Connect(function()
+            local s,e = pcall(function()
+                for i,v in pairs(Player.Character:GetChildren()) do
+                    if v:IsA('Script') then
+                        if v.Name ~= 'Animate' and v.Name ~= 'Health' then
+                            if v:FindFirstChild('LocalScript') then
+                                v.LocalScript.Disabled = true
+                            end
+                        end
+                    end
+                end
+                if MainStatus.StandStatus.IsSummoned and Player.Character then
+                    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = StandUser.Character.HumanoidRootPart.CFrame * MainStatus.StandStatus.StandPos
+                    local IsAnimated = false
+                    for _,v in pairs(Player.Character:FindFirstChildWhichIsA('Humanoid'):GetPlayingAnimationTracks()) do
+                        if v.Animation.AnimationId == 'rbxassetid://3541114300' then
+                            IsAnimated = true
+                        end
+                    end
+                    if not IsAnimated then
+                        Player.Character:FindFirstChildWhichIsA('Humanoid'):LoadAnimation(Float):Play()
+                    end
+                elseif MainStatus.StandStatus.CurrentAction == 'Vanish' and Player.Character then
+                    local RanX = math.random(-150,150)
+                    local RanY = math.random(-150,150)
+                    local RanZ = math.random(-150,150)
+                    Player.Character.HumanoidRootPart.CFrame = CFrame.new(0 + RanX,1000 + RanY,0 + RanZ)
+                    BreakVelocity()
+                elseif MainStatus.StandStatus.CurrentAction == 'Barrage2' and Player.Character then
+                    Player.Character.HumanoidRootPart.CFrame = StandUser.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,-6)
+                    NormalAttack()
+                elseif MainStatus.StandStatus.CurrentAction == 'Flinging' and game.Players:FindFirstChild(MainStatus.StandStatus.CurrentTarget.Name) and Player.Character then
+                    local FlingEnemy = MainStatus.StandStatus.CurrentTarget.Character
+                    if FlingEnemy then
+                        FlingTorso = FlingEnemy.UpperTorso
+                        local dis = 3.85
+                        local increase = 6
+                        if FlingEnemy.Humanoid.MoveDirection.X < 0 then
+                            xchange = -increase
+                        elseif FlingEnemy.Humanoid.MoveDirection.X > 0  then
+                            xchange = increase
+                        else
+                            xchange = 0
+                        end
+                        if FlingEnemy.Humanoid.MoveDirection.Z < 0 then
+                            zchange = -increase
+                        elseif FlingEnemy.Humanoid.MoveDirection.Z > 0 then
+                            zchange = increase
+                        else
+                            zchange = 0
+                        end          
+                        Player.Character.HumanoidRootPart.CFrame = CFrame.new(FlingTorso.Position.X + math.random(-dis,dis) + xchange, FlingTorso.Position.Y, FlingTorso.Position.Z + math.random(-dis,dis) + zchange) * CFrame.Angles(math.rad(Player.Character.HumanoidRootPart.Orientation.X + 350),math.rad(Player.Character.HumanoidRootPart.Orientation.Y + 200),math.rad(Player.Character.HumanoidRootPart.Orientation.Z + 240))
+                        Player.Character.HumanoidRootPart.Velocity = Vector3.new(500000,500000,500000)
+                    end
+                elseif MainStatus.StandStatus.CurrentAction == 'Killing' and game.Players:FindFirstChild(MainStatus.StandStatus.CurrentTarget.Name) and Player.Character then
+                    local FlingEnemy = MainStatus.StandStatus.CurrentTarget.Character
+                    if FlingEnemy then
+                        FlingTorso = FlingEnemy.UpperTorso
+                        local dis = 3.85
+                        local increase = 6
+                        if FlingEnemy.Humanoid.MoveDirection.X < 0 then
+                            xchange = -increase
+                        elseif FlingEnemy.Humanoid.MoveDirection.X > 0  then
+                            xchange = increase
+                        else
+                            xchange = 0
+                        end
+                        if FlingEnemy.Humanoid.MoveDirection.Z < 0 then
+                            zchange = -increase
+                        elseif FlingEnemy.Humanoid.MoveDirection.Z > 0 then
+                            zchange = increase
+                        else
+                            zchange = 0
+                        end        
+                        if FlingEnemy.BodyEffects['K.O'].Value == false then
+                            Player.Character.HumanoidRootPart.CFrame = CFrame.new(FlingTorso.Position.X + math.random(-dis,dis) + xchange, FlingTorso.Position.Y, FlingTorso.Position.Z + math.random(-dis,dis) + zchange)
+                            HeavyAttack()
+                        else
+                            Player.Character.HumanoidRootPart.CFrame = FlingTorso.CFrame
+                            MainEvent:FireServer('Stomp')                    
+                        end
+                    end
+                elseif MainStatus.StandStatus.CurrentAction == 'Aura' and Player.Character and StandUser.Character then
+                    local RanX = math.random(-10,10)
+                    local RanZ = math.random(-10,10)
+                    Player.Character.HumanoidRootPart.CFrame = CFrame.new(StandUser.Character.UpperTorso.Position.X + RanX, StandUser.Character.UpperTorso.Position.Y - 10, StandUser.Character.UpperTorso.Position.Z + RanZ)
+                    if Player.Character:FindFirstChild('Combat') then
+                        Player.Character:FindFirstChild('Combat'):Activate()
+                        Player.Character:FindFirstChild('Combat'):Deactivate()
+                    else
+                        Player.Backpack:FindFirstChild('Combat').Parent = Player.Character
+                    end
+                elseif MainStatus.StandStatus.CurrentAction == 'Pierce' and Player.Character and StandUser.Character then
+                    local Target = GetNearest()
+                    if Target then
+                        local FlingEnemy = Target.Character
+                        if FlingEnemy then
+                            FlingTorso = FlingEnemy.UpperTorso
+                            local dis = 3.85
+                            local increase = 6
+                            if FlingEnemy.Humanoid.MoveDirection.X < 0 then
+                                xchange = -increase
+                            elseif FlingEnemy.Humanoid.MoveDirection.X > 0  then
+                                xchange = increase
+                            else
+                                xchange = 0
+                            end
+                            if FlingEnemy.Humanoid.MoveDirection.Z < 0 then
+                                zchange = -increase
+                            elseif FlingEnemy.Humanoid.MoveDirection.Z > 0 then
+                                zchange = increase
+                            else
+                                zchange = 0
+                            end        
+                            if FlingEnemy.BodyEffects['K.O'].Value == false then
+                                Player.Character.HumanoidRootPart.CFrame = CFrame.new(FlingTorso.Position.X + math.random(-dis,dis) + xchange, FlingTorso.Position.Y, FlingTorso.Position.Z + math.random(-dis,dis) + zchange)
+                                if Player.Character:FindFirstChild('Combat') then
+                                    Player.Character:FindFirstChild('Combat'):Activate()
+                                else
+                                    Player.Backpack:FindFirstChild('Combat').Parent = Player.Character
+                                end
+                            else
+                                Player.Character.HumanoidRootPart.CFrame = FlingTorso.CFrame
+                                MainEvent:FireServer('Stomp')                    
+                            end
+                        end
+                    else
+                        Player.Character.HumanoidRootPart.CFrame = StandUser.Character.HumanoidRootPart.CFrame * CFrame.new(2, 1, 3)
+                    end
+                elseif MainStatus.StandStatus.CurrentAction == 'Barrage' and Player.Character and StandUser.Character then
+                    local Target = GetNearest()
+                    if Target then
+                        local FlingEnemy = Target.Character
+                        if FlingEnemy then
+                            FlingTorso = FlingEnemy.UpperTorso
+                            local dis = 3.85
+                            local increase = 6
+                            if FlingEnemy.Humanoid.MoveDirection.X < 0 then
+                                xchange = -increase
+                            elseif FlingEnemy.Humanoid.MoveDirection.X > 0  then
+                                xchange = increase
+                            else
+                                xchange = 0
+                            end
+                            if FlingEnemy.Humanoid.MoveDirection.Z < 0 then
+                                zchange = -increase
+                            elseif FlingEnemy.Humanoid.MoveDirection.Z > 0 then
+                                zchange = increase
+                            else
+                                zchange = 0
+                            end        
+                            if FlingEnemy.BodyEffects['K.O'].Value == false then
+                                Player.Character.HumanoidRootPart.CFrame = CFrame.new(FlingTorso.Position.X + math.random(-dis,dis) + xchange, FlingTorso.Position.Y, FlingTorso.Position.Z + math.random(-dis,dis) + zchange)
+                                if Player.Character:FindFirstChild('Combat') then
+                                    Player.Character:FindFirstChild('Combat'):Activate()
+                                    Player.Character:FindFirstChild('Combat'):Deactivate()
+                                else
+                                    Player.Backpack:FindFirstChild('Combat').Parent = Player.Character
+                                end
+                            else
+                                Player.Character.HumanoidRootPart.CFrame = FlingTorso.CFrame
+                                MainEvent:FireServer('Stomp')                    
+                            end
+                        end
+                    else
+                        Player.Character.HumanoidRootPart.CFrame = StandUser.Character.HumanoidRootPart.CFrame * CFrame.new(2, 1, 3)
+                    end
+                elseif MainStatus.StandStatus.CurrentAction == 'Banish' and Player.Character and StandUser.Character then
+                    local Target = GetNearest()
+                    if Target then
+                        local FlingEnemy = Target.Character
+                        if FlingEnemy then
+                            FlingTorso = FlingEnemy.UpperTorso
+                            local dis = 3.85
+                            local increase = 6
+                            if FlingEnemy.Humanoid.MoveDirection.X < 0 then
+                                xchange = -increase
+                            elseif FlingEnemy.Humanoid.MoveDirection.X > 0  then
+                                xchange = increase
+                            else
+                                xchange = 0
+                            end
+                            if FlingEnemy.Humanoid.MoveDirection.Z < 0 then
+                                zchange = -increase
+                            elseif FlingEnemy.Humanoid.MoveDirection.Z > 0 then
+                                zchange = increase
+                            else
+                                zchange = 0 
+                            end        
+                            if FlingEnemy.BodyEffects['K.O'].Value == false and FlingEnemy:FindFirstChildWhichIsA('Humanoid').Sit == false then
+                                Player.Character.HumanoidRootPart.CFrame = CFrame.new(FlingTorso.Position.X + math.random(-dis,dis) + xchange, FlingTorso.Position.Y, FlingTorso.Position.Z + math.random(-dis,dis) + zchange) * CFrame.Angles(math.rad(Player.Character.HumanoidRootPart.Orientation.X + 350),math.rad(Player.Character.HumanoidRootPart.Orientation.Y + 200),math.rad(Player.Character.HumanoidRootPart.Orientation.Z + 240))
+                                Player.Character.HumanoidRootPart.Velocity = Vector3.new(500000,500000,500000)
+                            end
+                        end
+                    else
+                        Player.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
+                        Player.Character.HumanoidRootPart.CFrame = StandUser.Character.HumanoidRootPart.CFrame * CFrame.new(2, 1, 3)
+                    end
+                elseif MainStatus.StandStatus.CurrentAction == 'Mimic' and StandUser.Character then
+                    local Block = StandUser.Character.BodyEffects:FindFirstChild('Block')
+                    if StandUser.Character.BodyEffects.Attacking.Value == true then
+                        Player.Character.HumanoidRootPart.CFrame = StandUser.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,-6)
+                        if Player.Character:FindFirstChild('Combat') then
+                            Player.Character:FindFirstChild('Combat'):Activate()
+                            Player.Character:FindFirstChild('Combat'):Deactivate()
+                        else
+                            Player.Backpack:FindFirstChild('Combat').Parent = Player.Character
+                        end
+                    elseif Block then
+                        Player.Character.HumanoidRootPart.CFrame = StandUser.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,-6)
+                        if not Player.Character.BodyEffects:FindFirstChild('Block') then
+                            MainEvent:FireServer('Block', true)
+                        end
+                    else
+                        if Player.Character.BodyEffects:FindFirstChild('Block') then
+                            Player.Character.BodyEffects:FindFirstChild('Block'):Destroy()
+                        end
+                        Player.Character.HumanoidRootPart.CFrame = StandUser.Character.HumanoidRootPart.CFrame * CFrame.new(0, 1, 3)
+                    end
+                elseif StandUser.Character and MainStatus.StandStatus.IsSummoned then
+                    MainStatus.StandStatus.CurrentAction = 'Idle'
+                    MainStatus.StandStatus.CurrentTarget = nil
+                    BreakVelocity()
+                end
+            end)
+            if e then print(e) end
+        end)
+    end
+
+    function Floating()
+        RS.Heartbeat:Connect(function()
+            if Player.Character then
+                local function MeleeReach()
+                    if Player.Character.BodyEffects.Attacking.Value == true then
+                        for i,v in pairs(game:GetService('Players'):GetChildren()) do
+                            if Player.Character:FindFirstChildOfClass('Tool') then
+                                if Player.Character:FindFirstChildOfClass('Tool'):FindFirstChild('Handle') then
+                                    firetouchinterest(Player.Character:FindFirstChildOfClass('Tool'):FindFirstChild('Handle'), v.Character.UpperTorso, 0)
+                                else
+                                    firetouchinterest(game.Players.LocalPlayer.Character['RightHand'], v.Character.UpperTorso, 0)
+                                    firetouchinterest(game.Players.LocalPlayer.Character['LeftHand'], v.Character.UpperTorso, 0)
+                                    firetouchinterest(game.Players.LocalPlayer.Character['RightLowerLeg'], v.Character.UpperTorso, 0)
+                                    firetouchinterest(game.Players.LocalPlayer.Character['LeftLowerLeg'], v.Character.UpperTorso, 0)
+                                end
+                            end
+                        end
+                    end
+                end
+                local s,e = pcall(MeleeReach)
+                if Player.Character:FindFirstChild('BOOMBOXHANDLE') then
+                    Player.Character:FindFirstChild('BOOMBOXHANDLE'):Destroy()
+                end
+                for _,v in pairs(Player.Character:FindFirstChildWhichIsA('Humanoid'):GetPlayingAnimationTracks()) do
+                    if v.Name == 'Block' then
+                        v:Stop()
+                    end
+                end
+                if Player.Character:FindFirstChild('Christmas_Sock') then
+                    Player.Character:FindFirstChild('Christmas_Sock'):Destroy()
+                end
+            end
+        end)
+    end
+    coroutine.resume(coroutine.create(Start))
+    coroutine.resume(coroutine.create(Floating))
+    StandUsa:GetPropertyChangedSignal("MoveDirection"):Connect(Moved)
+    sendNotification("Linux's Stand Script", "Stand Ready!")
+    if err then print(err) end

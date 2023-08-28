@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Macro xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>Macro 4</Name>
+  <Guid>21b0db6a-da51-4b91-88c5-7f4d29303777</Guid>
+  <MacroEvents>
+    <MacroEvent>
+      <Type>2</Type>
+      <Delay>10</Delay>
+      <MouseEvent>
+        <MouseButton>9</MouseButton>
+        <State>0</State>
+      </MouseEvent>
+    </MacroEvent>
+    <MacroEvent>
+      <Type>2</Type>
+      <Delay>10</Delay>
+      <MouseEvent>
+        <MouseButton>10</MouseButton>
+        <State>0</State>
+      </MouseEvent>
+    </MacroEvent>
+    <MacroEvent>
+      <Type>2</Type>
+      <Delay>10</Delay>
+      <MouseEvent>
+        <MouseButton>9</MouseButton>
+        <State>0</State>
+      </MouseEvent>
+    </MacroEvent>
+    <MacroEvent>
+      <Type>2</Type>
+      <Delay>10</Delay>
+      <MouseEvent>
+        <MouseButton>10</MouseButton>
+        <State>0</State>
+      </MouseEvent>
+    </MacroEvent>
+  </MacroEvents>
+  <IsFolder>false</IsFolder>
+  <FolderGuid>00000000-0000-0000-0000-000000000000</FolderGuid>
+</Macro>

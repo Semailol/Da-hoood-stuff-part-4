@@ -1,0 +1,275 @@
+local function rm()
+    for i, v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+        if v.Name == "OriginalPosition" then
+            v:Destroy()
+        elseif v.Name == "OriginalSize" then
+            v:Destroy()
+        elseif v.Name == "AvatarPartScaleType" then
+            v:Destroy()
+        end
+    end
+end
+local Humanoid = game.Players.LocalPlayer.Character.Humanoid
+game.Players.LocalPlayer.Chatted:Connect(function(msg)
+    if msg == "Colossal Mode!" then
+rm()
+wait(0.5)
+Humanoid:FindFirstChild("BodyTypeScale"):Destroy()
+wait(1)
+
+rm()
+wait(0.5)
+Humanoid:FindFirstChild("BodyWidthScale"):Destroy()
+wait(1)
+
+rm()
+wait(0.5)
+Humanoid:FindFirstChild("BodyDepthScale"):Destroy()
+wait(1)
+
+rm()
+wait(0.5)
+Humanoid:FindFirstChild("HeadScale"):Destroy()
+wait(1)
+    end
+end)
+
+
+Synapsead1.Name = "Synapsead1"
+	Synapsead1.Parent = SynapseX
+	Synapsead1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Synapsead1.Position = UDim2.new(0.0737148374, 0, 0.1237785, 0)
+	Synapsead1.Size = UDim2.new(0, 236, 0, 210)
+	Synapsead1.Visible = false
+	Synapsead1.Active = true
+
+	Synapseadtext1.Name = "Synapseadtext1"
+	Synapseadtext1.Parent = Synapsead1
+	Synapseadtext1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Synapseadtext1.Position = UDim2.new(0.0466101691, 0, 0.761904776, 0)
+	Synapseadtext1.Size = UDim2.new(0, 217, 0, 50)
+	Synapseadtext1.Font = Enum.Font.Highway
+	Synapseadtext1.Text = "HOT single aesthetics in your area ;)))"
+	Synapseadtext1.TextColor3 = Color3.fromRGB(0, 0, 0)
+	Synapseadtext1.TextSize = 20.000
+	Synapseadtext1.TextWrapped = true
+
+	Synapseadimage1.Name = "Synapseadimage1"
+	Synapseadimage1.Parent = Synapsead1
+	Synapseadimage1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Synapseadimage1.Position = UDim2.new(0.0466101691, 0, 0.0333333351, 0)
+	Synapseadimage1.Size = UDim2.new(0, 217, 0, 146)
+	Synapseadimage1.Image = "rbxassetid://6117434942"
+
+	Synapseadclose1.Name = "Synapseadclose1"
+	Synapseadclose1.Parent = Synapsead1
+	Synapseadclose1.BackgroundColor3 = Color3.fromRGB(252, 0, 6)
+	Synapseadclose1.Position = UDim2.new(0.881355941, 0, 0, 0)
+	Synapseadclose1.Size = UDim2.new(0, 28, 0, 27)
+	Synapseadclose1.Font = Enum.Font.SourceSans
+	Synapseadclose1.Text = "X"
+	Synapseadclose1.TextColor3 = Color3.fromRGB(0, 0, 0)
+	Synapseadclose1.TextSize = 14.000
+	Synapseadclose1.MouseButton1Down:connect(function()
+		wait(2)
+		Synapsead1.Visible = false
+		wait(30)
+		Synapsead1.Visible = true
+	end)
+
+	Synapsead2.Name = "Synapsead2"
+	Synapsead2.Parent = SynapseX
+	Synapsead2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Synapsead2.Position = UDim2.new(0.630455852, 0, 0.117263846, 0)
+	Synapsead2.Size = UDim2.new(0, 309, 0, 297)
+	Synapsead2.Visible = false
+	Synapsead2.Active = true
+
+	Synapseadtext2.Name = "Synapseadtext2"
+	Synapseadtext2.Parent = Synapsead2
+	Synapseadtext2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Synapseadtext2.Position = UDim2.new(0, 0, 0.801346779, 0)
+	Synapseadtext2.Size = UDim2.new(0, 309, 0, 59)
+	Synapseadtext2.Font = Enum.Font.SourceSansSemibold
+	Synapseadtext2.Text = "Enter in y0u'r rawblrx account pasward to start CHATTING"
+	Synapseadtext2.TextColor3 = Color3.fromRGB(0, 0, 0)
+	Synapseadtext2.TextSize = 20.000
+	Synapseadtext2.TextWrapped = true
+
+	Synapseadclose2.Name = "Synapseadclose2"
+	Synapseadclose2.Parent = Synapsead2
+	Synapseadclose2.BackgroundColor3 = Color3.fromRGB(252, 0, 6)
+	Synapseadclose2.Position = UDim2.new(0.932038844, 0, 0, 0)
+	Synapseadclose2.Size = UDim2.new(0, 21, 0, 19)
+	Synapseadclose2.Font = Enum.Font.SourceSans
+	Synapseadclose2.Text = "X"
+	Synapseadclose2.TextColor3 = Color3.fromRGB(0, 0, 0)
+	Synapseadclose2.MouseButton1Down:connect(function()
+		wait(2)
+		Synapsead2.Visible = false
+		Synapsead6.Visible = true
+		wait(5)
+		Synapsead6.Visible = false
+		wait(30)
+		Synapsead2.Visible = true
+	end)
+
+	Synapseadimage2.Name = "Synapseadimage2"
+	Synapseadimage2.Parent = Synapsead2
+	Synapseadimage2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Synapseadimage2.Position = UDim2.new(0.0194174759, 0, 0, 0)
+	Synapseadimage2.Size = UDim2.new(0, 282, 0, 230)
+	Synapseadimage2.Image = "rbxassetid://5915268144"
+
+	Synapsead3.Name = "Synapsead3"
+	Synapsead3.Parent = SynapseX
+	Synapsead3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Synapsead3.Position = UDim2.new(0.298739076, 0, 0.205211729, 0)
+	Synapsead3.Size = UDim2.new(0, 436, 0, 348)
+	Synapsead3.Visible = false
+	Synapsead3.Active = true
+
+	Synapseadtext3.Name = "Synapseadtext3"
+	Synapseadtext3.Parent = Synapsead3
+	Synapseadtext3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Synapseadtext3.Position = UDim2.new(0, 0, 0.856321812, 0)
+	Synapseadtext3.Size = UDim2.new(0, 436, 0, 50)
+	Synapseadtext3.Font = Enum.Font.SourceSans
+	Synapseadtext3.Text = "yo6r computer has V1RuZ! call +66 420 555 909 to install windoors DfEfediner!!!!"
+	Synapseadtext3.TextColor3 = Color3.fromRGB(0, 0, 0)
+	Synapseadtext3.TextSize = 18.000
+	Synapseadtext3.TextWrapped = true
+
+	Synapseadimage3.Name = "Synapseadimage3"
+	Synapseadimage3.Parent = Synapsead3
+	Synapseadimage3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Synapseadimage3.Position = UDim2.new(0.0160550456, 0, 0.0172413792, 0)
+	Synapseadimage3.Size = UDim2.new(0, 418, 0, 280)
+	Synapseadimage3.Image = "rbxassetid://34680495"
+
+	Synapseclose3.Name = "Synapseclose3"
+	Synapseclose3.Parent = Synapsead3
+	Synapseclose3.BackgroundColor3 = Color3.fromRGB(252, 0, 26)
+	Synapseclose3.Position = UDim2.new(0.928899109, 0, 0, 0)
+	Synapseclose3.Size = UDim2.new(0, 31, 0, 28)
+	Synapseclose3.Font = Enum.Font.SourceSans
+	Synapseclose3.Text = "X"
+	Synapseclose3.TextColor3 = Color3.fromRGB(0, 0, 0)
+	Synapseclose3.TextSize = 14.000
+	Synapseclose3.MouseButton1Down:connect(function()
+		wait(2)
+		Synapsead3.Visible = false
+		Synapsead6.Visible = true
+		wait(5)
+		Synapsead6.Visible = false
+		wait(30)
+		Synapsead3.Visible = true
+	end)
+
+	Synapsead4.Name = "Synapsead4"
+	Synapsead4.Parent = SynapseX
+	Synapsead4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Synapsead4.Size = UDim2.new(0, 1500, 0, 900)
+	Synapsead4.Visible = false
+	Synapsead4.Active = true
+
+	Synapseimage4.Name = "Synapseimage4"
+	Synapseimage4.Parent = Synapsead4
+	Synapseimage4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Synapseimage4.Size = UDim2.new(0, 1031, 0, 606)
+	Synapseimage4.Image = "rbxassetid://5599926838"
+
+	Synapsead5.Name = "Synapsead5"
+	Synapsead5.Parent = SynapseX
+	Synapsead5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Synapsead5.Position = UDim2.new(0.712900102, 0, 0.636807799, 0)
+	Synapsead5.Size = UDim2.new(0, 288, 0, 209)
+	Synapsead5.Visible = false
+	Synapsead5.Active = true
+
+	Synapseadtext5.Name = "Synapseadtext5"
+	Synapseadtext5.Parent = Synapsead5
+	Synapseadtext5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Synapseadtext5.Position = UDim2.new(0, 0, 0.784689009, 0)
+	Synapseadtext5.Size = UDim2.new(0, 288, 0, 45)
+	Synapseadtext5.Font = Enum.Font.Roboto
+	Synapseadtext5.Text = "You're compUteR hAz a ViRus!!!!. Install our malworare to ramove or caLl indian man"
+	Synapseadtext5.TextColor3 = Color3.fromRGB(0, 0, 0)
+	Synapseadtext5.TextSize = 14.000
+	Synapseadtext5.TextWrapped = true
+
+	Synapseadtext5dash1.Name = "Synapseadtext5dash1"
+	Synapseadtext5dash1.Parent = Synapsead5
+	Synapseadtext5dash1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Synapseadtext5dash1.Size = UDim2.new(0, 288, 0, 20)
+	Synapseadtext5dash1.Font = Enum.Font.SourceSans
+	Synapseadtext5dash1.Text = "Windoes Doefornder"
+	Synapseadtext5dash1.TextColor3 = Color3.fromRGB(0, 0, 0)
+	Synapseadtext5dash1.TextSize = 14.000
+
+	Synapseadimage5.Name = "Synapseadimage5"
+	Synapseadimage5.Parent = Synapsead5
+	Synapseadimage5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Synapseadimage5.Position = UDim2.new(0, 0, 0.095693782, 0)
+	Synapseadimage5.Size = UDim2.new(0, 159, 0, 144)
+	Synapseadimage5.Image = "rbxassetid://59120801"
+
+	Synapseadimage5dash1.Name = "Synapseadimage5dash1"
+	Synapseadimage5dash1.Parent = Synapsead5
+	Synapseadimage5dash1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Synapseadimage5dash1.Position = UDim2.new(0.552083313, 0, 0.095693782, 0)
+	Synapseadimage5dash1.Size = UDim2.new(0, 129, 0, 144)
+	Synapseadimage5dash1.Image = "rbxassetid://651221972"
+
+	Synapsead6.Name = "Synapsead6"
+	Synapsead6.Parent = SynapseX
+	Synapsead6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Synapsead6.Position = UDim2.new(0.0572259948, 0, 0.0390879475, 0)
+	Synapsead6.Size = UDim2.new(0, 913, 0, 549)
+	Synapsead6.Visible = false
+	Synapsead6.Active = true
+
+	Synapseadtext6.Name = "Synapseadtext6"
+	Synapseadtext6.Parent = Synapsead6
+	Synapseadtext6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Synapseadtext6.Size = UDim2.new(0, 913, 0, 302)
+	Synapseadtext6.Font = Enum.Font.SourceSansBold
+	Synapseadtext6.Text = "FREE ROBUX @https://www.youtube.com/watch?v=xvFZjo5PgG0"
+	Synapseadtext6.TextColor3 = Color3.fromRGB(0, 0, 0)
+	Synapseadtext6.TextSize = 36.000
+
+	Synapseadimage6.Name = "Synapseadimage6"
+	Synapseadimage6.Parent = Synapsead6
+	Synapseadimage6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Synapseadimage6.Position = UDim2.new(0, 0, 0.550091088, 0)
+	Synapseadimage6.Size = UDim2.new(0, 913, 0, 247)
+	Synapseadimage6.Image = "rbxassetid://684637914"
+
+	Synapsead7.Name = "Synapsead7"
+	Synapsead7.Parent = SynapseX
+	Synapsead7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Synapsead7.Position = UDim2.new(0.0378273539, 0, 0.602605879, 0)
+	Synapsead7.Size = UDim2.new(0, 353, 0, 217)
+	Synapsead7.Visible = false
+	Synapsead7.Active = true
+	wait(5)
+	Synapsead7.Visible = false
+	wait(7.5)
+	Synapsead7.Visible = true
+
+	Synapseadtext7.Name = "Synapseadtext7"
+	Synapseadtext7.Parent = Synapsead7
+	Synapseadtext7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Synapseadtext7.Position = UDim2.new(0, 0, 0.732718945, 0)
+	Synapseadtext7.Size = UDim2.new(0, 353, 0, 58)
+	Synapseadtext7.Font = Enum.Font.Roboto
+	Synapseadtext7.Text = "ROBLOX HQ drAma!!! Find out what BUILDERMAN did to Jane Doe ;)))))) :flushed: :eyes:"
+	Synapseadtext7.TextColor3 = Color3.fromRGB(0, 0, 0)
+	Synapseadtext7.TextSize = 16.000
+	Synapseadtext7.TextWrapped = true
+
+	Synapseadimage7.Name = "Synapseadimage7"
+	Synapseadimage7.Parent = Synapsead7
+	Synapseadimage7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Synapseadimage7.Size = UDim2.new(0, 353, 0, 159)
+	Synapseadimage7.Image = "rbxassetid://37831226"
